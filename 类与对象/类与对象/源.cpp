@@ -210,10 +210,9 @@ int main () {
 
 
 
+	//new delete
 
-
-
-
+	Date* newd = new Date(2019, 1, 11);//new 的返回值是指针
 
 	//new 操作符, 底层调用 operator new 函数, 此函数封装了 malloc 构造函数 异常
 	//delete 操作符, 底层调用 operator delete 函数, 函数有 free 析构函数
