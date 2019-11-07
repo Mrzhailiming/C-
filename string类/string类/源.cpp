@@ -8,14 +8,16 @@ int main () {
 	string::iterator sit = s.begin();
 	//迭代器
 	//operator[]
-	//范围for
+	//范围for 在参数为& 类型时可写
 	//都可读可写
 	//while (sit != s.end()){
 	//	cout << *sit;
 	//	sit++;
 	//}
 
-	s.reserve(1);//不会减小容量
+
+	//提前增加容量
+	s.reserve(1);// 如果数据太少,就会减少容量 但是不会减小容量,
 	cout << s.size() << endl;
 	cout << s.capacity() << endl;
 
@@ -42,11 +44,16 @@ int main () {
 	string s2("replace");
 	s.replace(0, 1, s2);//s2 + ello;
 
-	//返回
+	//返回一个 c风格的字符串
 	cout << s.c_str() << endl;
 
 	//cin 遇到空格/换行结束
-	//getline(cin, ) 遇到换行结束
+	//getline(cin, ...) 遇到换行结束
+
+	// operator+=
+	// swap 浅拷贝
+	//operator+
+
 
 	return 0;
 }
