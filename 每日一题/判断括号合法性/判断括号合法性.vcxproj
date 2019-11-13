@@ -10,13 +10,10 @@
       <Platform>Win32</Platform>
     </ProjectConfiguration>
   </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="..\判断括号合法性\判断括号合法性.cpp" />
-  </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{035A5736-543C-4987-BA03-DF1ECA66F4A2}</ProjectGuid>
+    <ProjectGuid>{38CB8C2C-4657-40CA-A264-8017FC3BF25B}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
-    <RootNamespace>每日一题</RootNamespace>
+    <RootNamespace>判断括号合法性</RootNamespace>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -80,6 +77,9 @@
       <OptimizeReferences>true</OptimizeReferences>
     </Link>
   </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="..\每日一题\回文串.cpp" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

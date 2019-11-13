@@ -11,7 +11,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\每日一题\源.cpp" />
+    <ClCompile Include="最大 子数组的和.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{2CDCB929-FD47-4C2A-A7DD-A5D2DAC06E4A}</ProjectGuid>

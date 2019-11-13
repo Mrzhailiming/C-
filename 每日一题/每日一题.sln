@@ -7,6 +7,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "每日一题", "每日一�
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "最大子数组的和", "最大子数组的和\最大子数组的和.vcxproj", "{2CDCB929-FD47-4C2A-A7DD-A5D2DAC06E4A}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "判断括号合法性", "判断括号合法性\判断括号合法性.vcxproj", "{38CB8C2C-4657-40CA-A264-8017FC3BF25B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -21,6 +23,10 @@ Global
 		{2CDCB929-FD47-4C2A-A7DD-A5D2DAC06E4A}.Debug|Win32.Build.0 = Debug|Win32
 		{2CDCB929-FD47-4C2A-A7DD-A5D2DAC06E4A}.Release|Win32.ActiveCfg = Release|Win32
 		{2CDCB929-FD47-4C2A-A7DD-A5D2DAC06E4A}.Release|Win32.Build.0 = Release|Win32
+		{38CB8C2C-4657-40CA-A264-8017FC3BF25B}.Debug|Win32.ActiveCfg = Debug|Win32
+		{38CB8C2C-4657-40CA-A264-8017FC3BF25B}.Debug|Win32.Build.0 = Debug|Win32
+		{38CB8C2C-4657-40CA-A264-8017FC3BF25B}.Release|Win32.ActiveCfg = Release|Win32
+		{38CB8C2C-4657-40CA-A264-8017FC3BF25B}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

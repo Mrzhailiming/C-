@@ -3,7 +3,6 @@
 using namespace std;
 
 
-
 int childSum(int* arr, int begin, int end){
 	int sum = 0;
 	while (begin <= end){
@@ -59,5 +58,6 @@ int main(){
 	}
 	ret = maxSum(arr, num);
 	cout << ret;
+
 	return 0;
 }

@@ -15,7 +15,7 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\每日一题\源.cpp">
+    <ClCompile Include="最大 子数组的和.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
