@@ -1,3 +1,8 @@
+#include <iostream>
+#include <queue>
+#include <list>
+using namespace std;
+
 //stack: push pop top
 //		deque vector list
 //		deque deque 增容代价小, 不易造成内存碎片
@@ -9,13 +14,6 @@
 //		deque vecter
 //		list 不支持随机访问
 //		vector 随机访问效率高
-
-
-
-
-
-
-
 
 
 //仿函数 重载()
@@ -32,3 +30,35 @@ struct Less{
 		return a < b;
 	}
 };
+
+//类型萃取
+struct falseType{
+	static bool get(){ return false; }
+};
+struct trueType{
+	static bool get(){ return true; }
+};
+//
+template <class T>
+struct typeTraits{
+	typedef falseType retType;
+};
+
+//内置类型特化
+template <>
+struct typeTraits<int>{
+	typedef trueType retType;
+};
+template <>
+struct typeTraits<char>{
+	typedef trueType retType;
+};
+template <>
+struct typeTraits<double>{
+	typedef trueType retType;
+};
+
+int main () {
+	priority_queue<int, list<int>, Greater<int>> s;
+ 	return 0;
+}
