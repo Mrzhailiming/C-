@@ -1,7 +1,9 @@
 #include <iostream>
 using namespace std;
-
+//2020/12/21
+//虚表指针
 typedef void(*vfptr) ();
+
 class Parent{
 public:
 	virtual void fun1(){
@@ -20,6 +22,8 @@ public:
 		cout << "fun2" << endl;
 	}
 };
+
+//打印虚表指向的函数
 void PrintfFun(vfptr* p){
 	while (*p != nullptr){
 		vfptr f = *p;
