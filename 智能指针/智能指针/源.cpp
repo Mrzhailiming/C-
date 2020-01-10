@@ -96,14 +96,14 @@ private:
 			2. 智能指针管理的对象存放在堆上，两个线程中同时去访问，会导致线程安全问题。
 			*/
 			// 引用计数减1，如果减到0，则释放资源
-		_pMutex.lock();
+		_pMutex->lock();
 		if (--(*_pRefCount) == 0)
 		{
 			delete _ptr;
 			delete _pRefCount;
 			deleteflag = true;
 		}
-		_pMutex.unlock();
+		_pMutex->unlock();
 
 		if (deleteflag == true)
 			delete _pMutex;
