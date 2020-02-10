@@ -1,5 +1,6 @@
 #include <iostream>
 #include <map>
+#include <vector>
 using namespace std;
 
 //lc 350
@@ -98,10 +99,57 @@ using namespace std;
 //}
 
 
+//lc 884
+//vector<string> uncommonFromSentences(string A, string B) {
+//	vector<string> ret;
+//	map<string, int> mp;
+//	string tmp;
+//	int i = 0;
+//	int len = A.size();
+//	while (i < len){
+//		while (A[i] != ' ' && i < len){
+//			tmp += A[i];
+//			++i;
+//		}
+//		++mp[tmp];
+//		tmp = "";
+//		++i;
+//	}
+//	i = 0;
+//	len = B.size();
+//	while (i < len){
+//		while (B[i] != ' ' && i < len){
+//			tmp += B[i];
+//			++i;
+//		}
+//		++mp[tmp];
+//		tmp = "";
+//		++i;
+//	}
+//	for (auto& e : mp){
+//		if (e.second == 1){
+//			ret.push_back(e.first);
+//		}
+//	}
+//	return ret;
+//}
+
+
 int main(){
-	string tmp;
+
+
+
+
+	/*string a = "what a be";
+	string b = "what c be";
+	uncommonFromSentences(a, b);
+	*/
+
+	/*string tmp;
 	tmp += "acb";
 	tmp = "";
-
+	vector<string> tmp2;
+	tmp2.push_back("abc");
+	tmp2.clear();*/
 	return 0;
 }

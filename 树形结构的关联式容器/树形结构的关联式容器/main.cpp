@@ -24,10 +24,9 @@ void testMultimap(){
 
 void testmap(){
 	map<char, int> mp;
-
 	mp.insert(make_pair('a', 10));
-	mp.insert(make_pair('a', 10));
-	mp.insert(make_pair('a', 10));
+	mp.insert(make_pair('a', 20));
+	mp.insert(make_pair('a', 30));
 	mp.insert(make_pair('a', 10));
 	mp.insert(make_pair('a', 10));
 	mp.insert(make_pair('b', 10));
