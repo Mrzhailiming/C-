@@ -1,5 +1,6 @@
-
-
+#include <iostream>
+#include <map>
+using namespace std;
 
 //lc 350
 //vector<int> intersect(vector<int>& nums1, vector<int>& nums2) {
@@ -95,3 +96,12 @@
 //	}
 //	return ret;
 //}
+
+
+int main(){
+	string tmp;
+	tmp += "acb";
+	tmp = "";
+
+	return 0;
+}
