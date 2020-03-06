@@ -18,5 +18,8 @@
     <ClCompile Include="stack.queue.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="priority_queue.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
