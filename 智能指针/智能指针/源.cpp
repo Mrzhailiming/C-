@@ -133,43 +133,41 @@ using namespace std;
 //}
 
 
-//守卫锁:多线程中防止死锁
-
-
-mutex mt;
-template <class Mutex>
-class LockGuard{
-public:
-	LockGuard(Mutex& mt = nullptr)
-	:_mt(mt){
-		cout << "lock" << endl;
-		_mt.lock();
-	}
-	~LockGuard(){
-		cout << "unlock" << endl;
-		_mt.unlock();
-	}
-private:
-	Mutex& _mt;
-};
-
-void fun(){
-	int i;
-	cin >> i;
-	LockGuard<mutex> lg(mt);
-	if (i == 9)
-		return;
-	cout << "yes" << endl;
-
-}
-
-int main(){
-	thread t1(fun);
-	thread t2(fun);
-	t1.join();
-	t2.join();
-
-	return 0;
-}
+////守卫锁:多线程中防止死锁
+//mutex mt;
+//template <class Mutex>
+//class LockGuard{
+//public:
+//	LockGuard(Mutex& mt = nullptr)
+//	:_mt(mt){
+//		cout << "lock" << endl;
+//		_mt.lock();
+//	}
+//	~LockGuard(){
+//		cout << "unlock" << endl;
+//		_mt.unlock();
+//	}
+//private:
+//	Mutex& _mt;
+//};
+//
+//void fun(){
+//	int i;
+//	cin >> i;
+//	LockGuard<mutex> lg(mt);
+//	if (i == 9)
+//		return;
+//	cout << "yes" << endl;
+//
+//}
+//
+//int main(){
+//	thread t1(fun);
+//	thread t2(fun);
+//	t1.join();
+//	t2.join();
+//
+//	return 0;
+//}
 
 
