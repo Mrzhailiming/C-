@@ -1,3 +1,7 @@
+#include <iostream>
+
+using namespace std;
+
 // List的节点类
 template<class T>
 struct ListNode
@@ -54,7 +58,7 @@ public:
 		return tmp;
 	}
 	bool operator!=(const Self& l){
-		return _pNode != l->_pNode;
+		return _pNode != l._pNode;
 	}
 	bool operator==(const Self& l){
 		return _pNode == l->_pNode;
@@ -69,28 +73,49 @@ class list
 	typedef Node* PNode;
 public:
 	typedef ListIterator<T, T&, T*> iterator;
-	typedef ListIterator<T, const T&, const T&> const_iterator;
+	typedef ListIterator<T, const T&, const T*> const_iterator;
 public:
 	///////////////////////////////////////////////////////////////
 	// List的构造
 	list(){
 		CreateHead();
 	}
+	//
 	list(int n, const T& value = T()){
-
+		CreateHead();
+		PNode newNode, cur = _pHead;
+		int i = 0;
+		for (; i < n; ++i){
+			newNode = new Node(value);
+			cur->_pNext = newNode;
+			newNode->_pPre = cur;
+			newNode->_pNext = _pHead;
+			_pHead->_pPre = newNode;
+			cur = newNode;
+		}
 	}
+	//迭代器构造函数
 	template <class Iterator>
 	list(Iterator first, Iterator last){
-
+		CreateHead();
+		while (first != last){
+			push_back(*first);
+			++first;
+		}
 	}
-	list(const list<T>& l){
-
+	//拷贝构造
+	list(const list<T>& src){
+		CreateHead();
+		//list<T> tmp(src.const_begin(), src.const_end());
+		//swap(*this, tmp);
 	}
 	list<T>& operator=(const list<T> l){
 
 	}
 	~list(){
-
+		clear();
+		delete _pHead;
+		_pHead = nullptr;
 	}
 	///////////////////////////////////////////////////////////////
 	// List Iterator
@@ -109,7 +134,13 @@ public:
 	///////////////////////////////////////////////////////////////
 	// List Capacity
 	size_t size()const{
-
+		size_t count = 0;
+		PNode cur = _pHead->_pNext;
+		while (cur != _pHead){
+			++count;
+			cur = cur->_pNext;
+		}
+		return count;
 	}
 	bool empty()const{
 		return _pHead->_pNext == _pHead;
@@ -131,7 +162,7 @@ public:
 	////////////////////////////////////////////////////////////
 	// List Modify
 	void push_back(const T& val){ 
-		insert(--end(), val);
+		insert(end(), val);
 	}
 	void pop_back(){ 
 		erase(--end()); 
@@ -155,14 +186,19 @@ public:
 	}
 	// 删除pos位置的节点，返回该节点的下一个位置
 	iterator erase(iterator pos){
-		PNode pre = pos._pNode->_pPre;
-		PNode next = pos._pNode->_pNext;
-		pre->_pNext = next;
-		next->_pPre = pre;
-		delete pos->_pNode;
-		pos->_pNode = nullptr;
-		return iterator(next);
+		if (_pHead != _pHead->_pNext){
+			PNode pre = pos._pNode->_pPre;
+			PNode next = pos._pNode->_pNext;
+			pre->_pNext = next;
+			next->_pPre = pre;
+			delete pos._pNode;
+			pos._pNode = nullptr;
+			return iterator(next);
+		}
+		return nullptr;
 	}
+
+	//清空链表
 	void clear(){
 		if (_pHead != _pHead->_pNext){
 			PNode cur = _pHead->_pNext;
@@ -176,9 +212,9 @@ public:
 			cur = nullptr;
 		}
 	}
-	void swap(list<T>& l){
+	/*void swap(list<T>& l){
 
-	}
+	}*/
 private:
 	void CreateHead(){
 		_pHead = new Node();
@@ -189,11 +225,46 @@ private:
 	PNode _pHead;
 };
 
-int main(){
+void testInsert(){
 	list<int> l;
 	l.insert(l.begin(), 1);
 	l.insert(l.begin(), 2);
 	l.insert(l.begin(), 3);
 	l.front();
+}
+
+void testN_Val(){
+	list<int> l(10, 1);
+	size_t s = l.size();
+}
+
+void testErase(){
+	list<int> l;
+	l.insert(l.begin(), 10);
+	l.erase(l.begin());
+}
+
+void testIterator(){
+	list<int> l;
+	l.insert(l.begin(), 1);
+	l.insert(l.begin(), 2);
+	l.insert(l.begin(), 3);
+
+	list<int> itList(l.begin(), l.end());
+
+}
+
+void testCpy(){
+	list<int> l(10, 2);
+	list<int> l2(l);
+
+}
+
+int main(){
+	//testInsert();
+	//testN_Val();
+	//testErase();
+	//testCpy();//!
+	testIterator();
 	return 0;
 }
