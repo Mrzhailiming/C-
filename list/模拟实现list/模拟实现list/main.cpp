@@ -104,13 +104,16 @@ public:
 		}
 	}
 	//拷贝构造
-	list(const list<T>& src){
+	list(list<T>& l){
 		CreateHead();
-		//list<T> tmp(src.const_begin(), src.const_end());
-		//swap(*this, tmp);
+		list<T> tmp(l.begin(), l.end());
+		swap(tmp);
 	}
 	list<T>& operator=(const list<T> l){
-
+		clear();
+		list<T> tmp(l.begin(), l.end());
+		swap(tmp);
+		return *this;
 	}
 	~list(){
 		clear();
@@ -147,12 +150,13 @@ public:
 	}
 	////////////////////////////////////////////////////////////
 	// List Access
-	T& front(){
-		return _pHead->_pNext->_val;
-	}
 	const T& front()const{
 		return _pHead->_pNext->_val;
 	}
+	T& front(){
+		return _pHead->_pNext->_val;
+	}
+	
 	T& back(){
 		return _pHead->_pPre;
 	}
@@ -212,10 +216,59 @@ public:
 			cur = nullptr;
 		}
 	}
-	/*void swap(list<T>& l){
+	void swap(list<T>& l){
+		PNode newNode, oldNode;
+		//newNode 代表this, oldNode代表l
+		newNode = _pHead->_pNext;
+		oldNode = l._pHead->_pNext;
+		//第一步: 相等数量的交换
+		while (oldNode != l._pHead && newNode != _pHead){
+			T& tmp = oldNode->_val;
+			oldNode->_val = newNode->_val;
+			newNode->_val = tmp;
+			oldNode = oldNode->_pNext;
+			newNode = newNode->_pNext;
+		}
+		//第二步: 判断多出来的那个
+		if (oldNode != l._pHead){//this没有需要交换的了, 需要把l首尾相连
+			l._pHead->_pPre = oldNode->_pPre;//oldNode的上一个元素是l的最后一个元素
+			oldNode->_pPre->_pNext = l._pHead;
+			//此时的newNode是_pHead, 需要更新到最后一个元素
+			newNode = newNode->_pPre;
+			while (oldNode != l._pHead){
+				
+				PNode cur = new Node(oldNode->_val);
+				newNode->_pNext = cur;
+				cur->_pPre = newNode;
+				PNode des = oldNode;
+				oldNode = oldNode->_pNext;
+				delete des;
+				newNode = cur;
+			}
+			_pHead->_pPre = newNode;
+			newNode->_pNext = _pHead;
+		}
+		else if (newNode != _pHead){//l没有需要交换的了, 需要把this首尾相连
+			_pHead->_pPre = newNode->_pPre;//newNode的上一个元素是this的最后一个元素
+			newNode->_pPre->_pNext = _pHead;
+			//此时的oldNode是l._pHead, 需要更新到最后一个元素
+			oldNode = oldNode->_pPre;
+			while (newNode != _pHead){
 
-	}*/
+				PNode cur = new Node(newNode->_val);
+				oldNode->_pNext = cur;
+				cur->_pPre = oldNode;
+				PNode des = newNode;
+				newNode = newNode->_pNext;
+				delete des;
+				oldNode = cur;
+			}
+			l._pHead->_pPre = oldNode;
+			oldNode->_pNext = l._pHead;
+		}
+	}
 private:
+	//创建头节点
 	void CreateHead(){
 		_pHead = new Node();
 		_pHead->_pNext = _pHead;
@@ -255,16 +308,27 @@ void testIterator(){
 }
 
 void testCpy(){
-	list<int> l(10, 2);
-	list<int> l2(l);
+	list<int> l;
+	l.insert(l.begin(), 3);
+	l.insert(l.begin(), 2);
+	l.insert(l.begin(), 1);
+	list<int> l2(l);//拷贝
+	list<int> l3 = l;//赋值
+	list<int> l4;
+	l4.swap(l3);//交换
+}
 
+void testOperator(){
+	list<int> l(10, 2);
+	list<int> l2 = l;
 }
 
 int main(){
 	//testInsert();
 	//testN_Val();
 	//testErase();
-	//testCpy();//!
-	testIterator();
+	testCpy();//!
+	///testIterator();
+	//testOperator();
 	return 0;
 }
