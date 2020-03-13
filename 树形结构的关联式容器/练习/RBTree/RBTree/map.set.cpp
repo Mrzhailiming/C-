@@ -1,4 +1,4 @@
-#if 0
+#if 1
 #include <iostream>
 
 using namespace std;
@@ -8,10 +8,11 @@ enum{
 	BLACK
 };
 
-template <class k, class v>
+//node节点
+template <class v>
 class TreeNode{
 public:
-	TreeNode(const pair<k, v>& val = pair<k, v>())
+	TreeNode(const v& val = v())
 		:_val(val)
 		, _left(nullptr)
 		, _right(nullptr)
@@ -19,20 +20,72 @@ public:
 		, _color(RED){
 		;
 	}
-	TreeNode<k, v>* _left;
-	TreeNode<k, v>* _right;
-	TreeNode<k, v>* _parent;
-	pair<k, v> _val;
+	TreeNode<v>* _left;
+	TreeNode<v>* _right;
+	TreeNode<v>* _parent;
+	v _val;
 	int _color;
-	
+
 };
 
-template <class k, class v>
+//封装迭代器
+template <class V>
+class Itrator{
+public:
+	typedef Itrator<V> it;
+	typedef TreeNode<V> Node;
+	typedef Node* pNode;
+	Itrator(const pNode val)
+		:_root(val){
+		;
+	}
+	V& operator*(){
+		return _root->_val;
+	}
+	V* operator->(){
+		return &(_root->_val);
+	}
+	it& operator++(){
+		//当前节点有右节点,则访问右节点的最左节点
+		if (_root->_right != nullptr){
+			_root = _root->_right;
+			while (_root && _root->_left){
+				_root = _root->_left;
+			}
+		}
+		//当前节点没有右节点,则判断当前节点是不是父亲的左节点
+		else{
+			pNode parent = _root->_parent;
+			while (_root == parent->_right){
+				_root = parent;
+				parent = parent->_parent;
+			}
+			_root = parent;
+		}
+		return *this;
+	}
+	bool operator!=(const it& tar){
+		return _root != tar._root;
+	}
+
+private:
+	pNode _root;
+};
+
+template <class k, class v, class kOfv>
 class RBTree{
 public:
-	typedef TreeNode<k, v> Node;
+	kOfv keyOfvalue;
+	typedef TreeNode<v> Node;
 	typedef Node* pNode;
-	//
+	typedef Itrator<v> itrator;//迭代器
+	////获取迭代器
+	itrator begin(){
+		return itrator(_head->_left);
+	}
+	itrator end(){
+		return itrator(_head);
+	}
 	RBTree()
 		:_head(new Node()){
 		_head->_left = _head;
@@ -41,7 +94,7 @@ public:
 	}
 
 	//插入
-	bool insertNode(pair<k, v>& val){
+	bool insertNode(v& val){
 		//空树的情况
 		if (_head->_parent == nullptr){
 			pNode newNode = new Node(val);
@@ -59,10 +112,10 @@ public:
 			pNode cur = _head->_parent;
 			pNode parent = nullptr;
 			while (cur){
-				if (val.first == cur->_val.first){
+				if (keyOfvalue(val) == keyOfvalue(cur->_val)){
 					return false;
 				}
-				else if (val.first < cur->_val.first){
+				else if (keyOfvalue(val) < keyOfvalue(cur->_val)){
 					parent = cur;
 					cur = cur->_left;
 				}
@@ -74,7 +127,7 @@ public:
 			//第二步: 插入
 			cur = new Node(val);
 			cur->_parent = parent;
-			if (val.first < parent->_val.first){
+			if (keyOfvalue(val) < keyOfvalue(parent->_val)){
 				parent->_left = cur;
 			}
 			else{
@@ -130,7 +183,7 @@ public:
 						break;//结束更新节点颜色
 					}
 				}
-				
+
 			}
 			//根节点始终黑色
 			_head->_parent->_color = BLACK;
@@ -220,7 +273,7 @@ public:
 	void _inOrder(pNode root){
 		if (root){
 			_inOrder(root->_left);
-			cout << root->_val.first << "->" << root->_val.second << "--";
+			cout << keyOfvalue(root->_val) << "->" << keyOfvalue(root->_val) << endl;
 			_inOrder(root->_right);
 		}
 	}
@@ -260,22 +313,76 @@ public:
 		return _isRBTree(root->_left, curBlack, totalBlack)
 			&& _isRBTree(root->_right, curBlack, totalBlack);
 	}
+	
 private:
-	TreeNode<k, v>* _head;
+	TreeNode<v>* _head;
 };
 
 
 
-void test(){
-	RBTree<int, int> t;
-	t.insertNode(make_pair(1, 1));
-	t.insertNode(make_pair(-1, 1));
-	t.insertNode(make_pair(2, 1));
-	t.insertNode(make_pair(3, 1));
-	t.inOrder();
-	t.isRBTree();
-}
+//map
+template <class K, class T>
+class Map{
+public:
+	typedef 
+	class mapkeyOfvalue{
+	public:
+		const K& operator()(const pair<K, T>& val){
+			return val.first;
+		}
+	};
 
+	bool insert(pair<K, T>& val){
+		return _tree.insertNode(val);
+	}
+	void inorder(){
+		_tree.inOrder();
+	}
+
+	//获取迭代器
+	typedef typename RBTree<K, pair<K, T>, mapkeyOfvalue>::itrator it;
+	it begin(){
+		return _tree.begin();
+	}
+	it end(){
+		return _tree.end();
+	}
+
+private:
+	RBTree<K, pair<K, T>, mapkeyOfvalue> _tree;
+};
+
+template <class K>
+class Set{
+public:
+	class keyOfvalue{
+	public:
+		const K& operator()(const K& val = K()){
+			return val;
+		}
+	};
+	bool insert(const K& val){
+		return _tree.insertNode(val);
+	}
+
+	RBTree<K, K, keyOfvalue> _tree;
+};
+
+
+void test(){
+	Map<int, int> m;
+	m.insert(make_pair(1, 1));
+	m.insert(make_pair(2, 2));
+	m.insert(make_pair(3, 3));
+	m.insert(make_pair(4, 4));
+	m.insert(make_pair(5, 5));
+	m.inorder();
+	auto it = m.begin();
+	while (it != m.end()){
+		cout << it->first << endl;
+		++it;
+	}
+}
 
 int main(){
 	test();
