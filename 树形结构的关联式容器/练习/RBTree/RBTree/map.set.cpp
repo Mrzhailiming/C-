@@ -92,10 +92,27 @@ public:
 		_head->_right = _head;
 		_head->_parent = nullptr;
 	}
+	//查找
+	itrator find(const k& key){
+		pNode cur = _head->_parent;
+		while (cur){
+			if (keyOfvalue(cur->_val) == key){
+				return itrator(cur);
+			}
+			else if (key < keyOfvalue(cur->_val)){
+				cur = cur->_left;
+			}
+			else{
+				cur = cur->_right;
+			}
+		}
+		return nullptr;
+	}
 
 	//插入
-	bool insertNode(v& val){
+	itrator insertNode(v& val){
 		//空树的情况
+		pNode ret;
 		if (_head->_parent == nullptr){
 			pNode newNode = new Node(val);
 			_head->_parent = newNode;
@@ -104,16 +121,17 @@ public:
 			//根是黑色的
 			newNode->_color = BLACK;
 			newNode->_parent = _head;
-			return true;
+			return itrator(newNode);
 		}
 		//不为空树的情况
+		
 		else{
 			//第一步: 寻找合适的插入位置
 			pNode cur = _head->_parent;
 			pNode parent = nullptr;
 			while (cur){
 				if (keyOfvalue(val) == keyOfvalue(cur->_val)){
-					return false;
+					return itrator(cur);
 				}
 				else if (keyOfvalue(val) < keyOfvalue(cur->_val)){
 					parent = cur;
@@ -126,6 +144,7 @@ public:
 			}
 			//第二步: 插入
 			cur = new Node(val);
+			ret = cur;
 			cur->_parent = parent;
 			if (keyOfvalue(val) < keyOfvalue(parent->_val)){
 				parent->_left = cur;
@@ -190,7 +209,7 @@ public:
 			_head->_left = leftNode();
 			_head->_right = rightNode();
 		}
-		return true;
+		return itrator(ret);
 	}
 
 	pNode leftNode(){
@@ -207,6 +226,8 @@ public:
 		}
 		return cur;
 	}
+	
+
 	//右旋
 	void rightRotate(pNode parent){
 
@@ -313,9 +334,48 @@ public:
 		return _isRBTree(root->_left, curBlack, totalBlack)
 			&& _isRBTree(root->_right, curBlack, totalBlack);
 	}
-	
-private:
+
+	bool empty(){
+		if (_head->_parent == _head){
+			return true;
+		}
+		return false;
+	}
+	void _size(pNode root, int& num){
+		if (root == nullptr){
+			return;
+		}
+		++num;
+		_size(root->_left, num);
+		_size(root->_right, num);
+	}
+	int size(){
+		int num = 0;
+		_size(_head->_parent, num);
+		return num;
+	}
+
+	void _clear(pNode root){
+		if (root == nullptr){
+			return;
+		}
+		pNode left = root->_left;
+		pNode right = root->_right;
+		delete root;
+		_clear(left);
+		_clear(right);
+	}
+	void clear(){
+		pNode cur = _head->_parent;
+		if (cur != _head){
+			_clear(cur);
+			_head->_left = _head;
+			_head->_right = _head;
+			_head->_parent = nullptr;
+		}
+	}
 	TreeNode<v>* _head;
+	
 };
 
 
@@ -331,16 +391,20 @@ public:
 			return val.first;
 		}
 	};
-
-	bool insert(pair<K, T>& val){
-		return _tree.insertNode(val);
+	typedef typename RBTree<K, pair<K, T>, mapkeyOfvalue>::itrator it;
+	pair<it, bool> insert(pair<K, T>& val){
+		it ret = _tree.insertNode(val);
+		if (ret != it(_tree._head)){
+			return make_pair(ret, true);
+		}
+		return make_pair(ret, false);
 	}
 	void inorder(){
 		_tree.inOrder();
 	}
 
 	//获取迭代器
-	typedef typename RBTree<K, pair<K, T>, mapkeyOfvalue>::itrator it;
+	
 	it begin(){
 		return _tree.begin();
 	}
@@ -348,6 +412,30 @@ public:
 		return _tree.end();
 	}
 
+	T& operator[](const K& key){
+		it ret = Find(key);
+		//key存在的情况
+		if (ret != nullptr){
+			return (*ret).second;
+		}
+		//key不存在的情况
+		else{
+			return (*(_tree.insertNode(make_pair(key, 0)))).second;
+		}
+	}
+	it Find(const K& key){
+		return _tree.find(key);
+	}
+
+	bool Empty(){
+		return _tree.empty();
+	}
+	int Size(){
+		return _tree.size();
+	}
+	void clear(){
+		_tree.clear();
+	}
 private:
 	RBTree<K, pair<K, T>, mapkeyOfvalue> _tree;
 };
@@ -361,31 +449,47 @@ public:
 			return val;
 		}
 	};
-	bool insert(const K& val){
-		return _tree.insertNode(val);
+	typedef typename RBTree<K, K, keyOfvalue>::itrator it;
+	it insert(const K& val){
+		it ret = _tree.insertNode(val);
+		if (ret != it(_tree._head)){
+			return make_pair(ret, true);
+		}
+		return make_pair(ret, false);
 	}
-
+	int Size(){
+		return _tree.size();
+	}
+	bool Empty(){
+		return _tree.empty();
+	}
+	void Clear(){
+		_tree.clear();
+	}
 	RBTree<K, K, keyOfvalue> _tree;
 };
 
 
-void test(){
-	Map<int, int> m;
-	m.insert(make_pair(1, 1));
-	m.insert(make_pair(2, 2));
-	m.insert(make_pair(3, 3));
-	m.insert(make_pair(4, 4));
-	m.insert(make_pair(5, 5));
-	m.inorder();
-	auto it = m.begin();
-	while (it != m.end()){
-		cout << it->first << endl;
-		++it;
-	}
+
+
+void testFind(){
+	Map<int, int> mp;
+	mp.insert(make_pair(1, 1));
+	mp.insert(make_pair(2, 2));
+	mp.insert(make_pair(3, 3));
+	mp.insert(make_pair(4, 4));
+	mp.insert(make_pair(5, 5));
+	mp[10];
+	auto ret = mp.insert(make_pair(1, 100));
+	mp.inorder();
+	int s = mp.Size();
+	mp.clear();
+
 }
 
 int main(){
-	test();
+	//test();
+	testFind();
 	return 0;
 }
 
