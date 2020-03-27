@@ -60,7 +60,8 @@ public:
 				_root = parent;
 				parent = parent->_parent;
 			}
-			_root = parent;
+			if (_root->_right != parent)
+				_root = parent;
 		}
 		return *this;
 	}
@@ -110,7 +111,7 @@ public:
 	}
 
 	//插入
-	itrator insertNode(v& val){
+	pair<itrator, bool> insertNode(v& val){
 		//空树的情况
 		pNode ret;
 		if (_head->_parent == nullptr){
@@ -121,7 +122,7 @@ public:
 			//根是黑色的
 			newNode->_color = BLACK;
 			newNode->_parent = _head;
-			return itrator(newNode);
+			return make_pair(itrator(newNode), true);
 		}
 		//不为空树的情况
 		
@@ -131,7 +132,7 @@ public:
 			pNode parent = nullptr;
 			while (cur){
 				if (keyOfvalue(val) == keyOfvalue(cur->_val)){
-					return itrator(cur);
+					return make_pair(itrator(cur), false);
 				}
 				else if (keyOfvalue(val) < keyOfvalue(cur->_val)){
 					parent = cur;
@@ -209,7 +210,7 @@ public:
 			_head->_left = leftNode();
 			_head->_right = rightNode();
 		}
-		return itrator(ret);
+		return make_pair(itrator(ret), true);
 	}
 
 	pNode leftNode(){
@@ -393,11 +394,7 @@ public:
 	};
 	typedef typename RBTree<K, pair<K, T>, mapkeyOfvalue>::itrator it;
 	pair<it, bool> insert(pair<K, T>& val){
-		it ret = _tree.insertNode(val);
-		if (ret != it(_tree._head)){
-			return make_pair(ret, true);
-		}
-		return make_pair(ret, false);
+		return _tree.insertNode(val);
 	}
 	void inorder(){
 		_tree.inOrder();
@@ -413,15 +410,7 @@ public:
 	}
 
 	T& operator[](const K& key){
-		it ret = Find(key);
-		//key存在的情况
-		if (ret != nullptr){
-			return (*ret).second;
-		}
-		//key不存在的情况
-		else{
-			return (*(_tree.insertNode(make_pair(key, 0)))).second;
-		}
+		return (*(_tree.insertNode(make_pair(key, T())).first)).second;
 	}
 	it Find(const K& key){
 		return _tree.find(key);
@@ -450,12 +439,8 @@ public:
 		}
 	};
 	typedef typename RBTree<K, K, keyOfvalue>::itrator it;
-	it insert(const K& val){
-		it ret = _tree.insertNode(val);
-		if (ret != it(_tree._head)){
-			return make_pair(ret, true);
-		}
-		return make_pair(ret, false);
+	pair<it, bool> insert(const K& val){
+		return _tree.insertNode(val);
 	}
 	int Size(){
 		return _tree.size();
@@ -479,8 +464,9 @@ void testFind(){
 	mp.insert(make_pair(3, 3));
 	mp.insert(make_pair(4, 4));
 	mp.insert(make_pair(5, 5));
-	mp[10];
-	auto ret = mp.insert(make_pair(1, 100));
+	auto ret = mp[10];
+	mp[10] = 100;
+	auto ret2 = mp.insert(make_pair(1, 100));
 	mp.inorder();
 	int s = mp.Size();
 	mp.clear();
