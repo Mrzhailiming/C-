@@ -92,21 +92,24 @@ class hashBucket{
 public:
 	//声明迭代器为友元类
 	template <class K, class V, class keyOfValue>
-	class hashIterator;
+	friend class hashIterator;
 	
 	//迭代器
 	typedef hashIterator<K,V,keyOfValue> iterator;
 	iterator begin(){
 		//寻找第一个有效元素
-		int index = 0;
+		size_t index = 0;
 		while (index < _hash.size()){
 			if (_hash[index]){
 				return iterator(_hash[index], this);
 			}
+			++index;
 		}
 		return iterator(nullptr, this);
 	}
-
+	iterator end(){
+		return iterator(nullptr, this);
+	}
 	//node节点
 	typedef Node<V> node;
 	typedef node* pNode;
@@ -226,11 +229,13 @@ public:
 	}
 
 	//迭代器
-	typedef typename hashBucket<K, pair<K,V>, MapkeyOfValue>::iterator it;
-	it begin(){
+	typedef typename hashBucket<K, pair<K,V>, MapkeyOfValue>::iterator iter;
+	iter begin(){
 		return _hashB.begin();
 	}
-
+	iter end(){
+		return _hashB.end();
+	}
 	void print(){
 		_hashB.printHash();
 	}
@@ -286,8 +291,11 @@ void testHashMap(){
 	hm.insert(make_pair(3, 3));
 	hm.insert(make_pair(10, 10));
 	hm.insert(make_pair(22, 22));
-	hm.print();
-	auto begin = hm.begin();
+	//hm.print();
+	hashMap<int, int>::iter it = hm.begin();
+	while (it != hm.end()){
+
+	}
 }
 
 void testHushBucket(){
