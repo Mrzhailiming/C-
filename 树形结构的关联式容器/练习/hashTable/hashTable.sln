@@ -5,6 +5,8 @@ VisualStudioVersion = 12.0.21005.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "hashTable", "hashTable\hashTable.vcxproj", "{E583E3C4-D632-4834-9651-4E98040CE7EC}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "BitMap", "BitMap\BitMap.vcxproj", "{0CFFC0E1-BFF4-4F1E-B9E5-F11E2BF61EA4}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -15,6 +17,10 @@ Global
 		{E583E3C4-D632-4834-9651-4E98040CE7EC}.Debug|Win32.Build.0 = Debug|Win32
 		{E583E3C4-D632-4834-9651-4E98040CE7EC}.Release|Win32.ActiveCfg = Release|Win32
 		{E583E3C4-D632-4834-9651-4E98040CE7EC}.Release|Win32.Build.0 = Release|Win32
+		{0CFFC0E1-BFF4-4F1E-B9E5-F11E2BF61EA4}.Debug|Win32.ActiveCfg = Debug|Win32
+		{0CFFC0E1-BFF4-4F1E-B9E5-F11E2BF61EA4}.Debug|Win32.Build.0 = Debug|Win32
+		{0CFFC0E1-BFF4-4F1E-B9E5-F11E2BF61EA4}.Release|Win32.ActiveCfg = Release|Win32
+		{0CFFC0E1-BFF4-4F1E-B9E5-F11E2BF61EA4}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

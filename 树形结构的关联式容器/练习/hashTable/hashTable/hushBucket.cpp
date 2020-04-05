@@ -320,10 +320,10 @@ void testHushBucket(){
 	h.printHash();
 }
 
-
-int main(){
-	//testHushBucket();
-	testHashMap();
-	//testHashSet();
-	return 0;
-}
+//
+//int main(){
+//	//testHushBucket();
+//	testHashMap();
+//	//testHashSet();
+//	return 0;
+//}
